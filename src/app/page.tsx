@@ -1,87 +1,45 @@
-"use client"
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
+'use client';
 import {
-  Code2, Rocket, Atom, Cpu, BrainCircuit, Sun,
-  Moon, Mail, Linkedin, Github, FlaskConical,
-  CircuitBoard, BookOpen, GraduationCap, Paintbrush,
-  Cog, Cloud, ChevronRight, LayoutTemplate
+  Atom,
+  BookOpen,
+  BrainCircuit,
+  ChevronRight,
+  CircuitBoard,
+  Cloud,
+  Code2,
+  Cpu,
+  FlaskConical,
+  Github,
+  GraduationCap,
+  Linkedin,
+  Mail,
+  Paintbrush,
+  Rocket,
 } from 'lucide-react';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState('home');
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [mounted, setMounted] = useState(false);
 
+  // Theme initialization and scroll spy setup
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = document.querySelectorAll('section');
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
-
-      for (const section of sections) {
-        const sectionTop = section.offsetTop;
-        const sectionBottom = sectionTop + section.offsetHeight;
-
-        if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
-          setActiveSection(section.id);
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Enhanced projects data
-  const projects = [
-    {
-      title: "Quantum Neural Interface",
-      description: "Bridging quantum computing with neural networks using hybrid architectures",
-      tech: ["Qiskit", "PyTorch", "Python"],
-      image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%234B5563'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='system-ui' font-size='24'%3EQuantum Neural Interface%3C/text%3E%3C/svg%3E",
-      icon: <BrainCircuit className="w-6 h-6" />,
-      complexity: "Advanced"
-    },
-    {
-      title: "AI Physics Simulator",
-      description: "Real-time physics engine with ML-powered particle dynamics",
-      tech: ["Rust", "WebAssembly", "Three.js"],
-      image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%234B5563'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='system-ui' font-size='24'%3EAI Physics Simulator%3C/text%3E%3C/svg%3E",
-      icon: <Atom className="w-6 h-6" />,
-      complexity: "Intermediate"
-    },
-    {
-      title: "Quantum Circuit Visualizer",
-      description: "Interactive visualization tool for quantum computing workflows",
-      tech: ["React", "WebGL", "TypeScript"],
-      image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%234B5563'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='system-ui' font-size='24'%3EQuantum Circuit Visualizer%3C/text%3E%3C/svg%3E",
-      icon: <CircuitBoard className="w-6 h-6" />,
-      complexity: "Advanced"
-    }
-  ];
-
-  // Enhanced skills data
-  const skills = [
-    { name: "Quantum Machine Learning", icon: <BrainCircuit className="w-8 h-8" /> },
-    { name: "High-Performance Computing", icon: <Cpu className="w-8 h-8" /> },
-    { name: "Scientific Visualization", icon: <Paintbrush className="w-8 h-8" /> },
-    { name: "Cloud Quantum Systems", icon: <Cloud className="w-8 h-8" /> }
-  ];
-
-  useEffect(() => {
-    setMounted(true);
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' || 'dark';
-    setTheme(savedTheme);
+    const savedTheme = localStorage.getItem('theme') || 'dark';
     document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    setMounted(true);
 
     // Enhanced scroll spy with better detection
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-          setActiveSection(entry.target.id);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            setActiveSection(entry.target.id);
+          }
         }
-      }
-    }, { threshold: [0.2, 0.5, 0.8], rootMargin: '-100px 0px -100px 0px' });
+      },
+      { threshold: [0.2, 0.5, 0.8], rootMargin: '-100px 0px -100px 0px' }
+    );
 
     for (const section of document.querySelectorAll('section')) {
       observer.observe(section);
@@ -90,18 +48,55 @@ export default function Portfolio() {
     return () => observer.disconnect();
   }, []);
 
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    document.documentElement.classList.toggle('dark', newTheme === 'dark');
-  };
-
   if (!mounted) return null;
+
+  // Enhanced projects data
+  const projects = [
+    {
+      title: 'Quantum Neural Interface',
+      description: 'Bridging quantum computing with neural networks using hybrid architectures',
+      tech: ['Qiskit', 'PyTorch', 'Python'],
+      image:
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%234B5563'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='system-ui' font-size='24'%3EQuantum Neural Interface%3C/text%3E%3C/svg%3E",
+      icon: <BrainCircuit className="w-6 h-6" />,
+      complexity: 'Advanced',
+    },
+    {
+      title: 'AI Physics Simulator',
+      description: 'Real-time physics engine with ML-powered particle dynamics',
+      tech: ['Rust', 'WebAssembly', 'Three.js'],
+      image:
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%234B5563'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='system-ui' font-size='24'%3EAI Physics Simulator%3C/text%3E%3C/svg%3E",
+      icon: <Atom className="w-6 h-6" />,
+      complexity: 'Intermediate',
+    },
+    {
+      title: 'Quantum Circuit Visualizer',
+      description: 'Interactive visualization tool for quantum computing workflows',
+      tech: ['React', 'WebGL', 'TypeScript'],
+      image:
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%234B5563'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='system-ui' font-size='24'%3EQuantum Circuit Visualizer%3C/text%3E%3C/svg%3E",
+      icon: <CircuitBoard className="w-6 h-6" />,
+      complexity: 'Advanced',
+    },
+  ];
+
+  // Enhanced skills data
+  const skills = [
+    {
+      name: 'Quantum Machine Learning',
+      icon: <BrainCircuit className="w-8 h-8" />,
+    },
+    { name: 'High-Performance Computing', icon: <Cpu className="w-8 h-8" /> },
+    {
+      name: 'Scientific Visualization',
+      icon: <Paintbrush className="w-8 h-8" />,
+    },
+    { name: 'Cloud Quantum Systems', icon: <Cloud className="w-8 h-8" /> },
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900">
-
       {/* Floating Particles Background */}
       <div className="fixed inset-0 opacity-20 dark:opacity-30 z-0">
         {Array.from({ length: 20 }, () => crypto.randomUUID()).map((uuid) => (
@@ -111,7 +106,7 @@ export default function Portfolio() {
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`
+              animationDelay: `${Math.random() * 5}s`,
             }}
           />
         ))}
@@ -134,24 +129,26 @@ export default function Portfolio() {
                   if (element) {
                     element.scrollIntoView({
                       behavior: 'smooth',
-                      block: 'start'
+                      block: 'start',
                     });
                   }
                 }}
-                className={`group flex items-center gap-2 transition-all ${activeSection === item
-                  ? 'text-purple-600 dark:text-purple-400 scale-105'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-purple-500 dark:hover:text-purple-300'
-                  }`}
+                className={`group flex items-center gap-2 transition-all ${
+                  activeSection === item
+                    ? 'text-purple-600 dark:text-purple-400 scale-105'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-purple-500 dark:hover:text-purple-300'
+                }`}
               >
                 <div className="relative p-1.5 sm:p-2">
                   {item === 'home' && <BookOpen className="w-5 h-5 md:w-6 md:h-6" />}
                   {item === 'projects' && <Rocket className="w-5 h-5 md:w-6 md:h-6" />}
                   {item === 'skills' && <GraduationCap className="w-5 h-5 md:w-6 md:h-6" />}
                   {item === 'contact' && <Mail className="w-5 h-5 md:w-6 md:h-6" />}
-                  <div className={`absolute inset-0 rounded-full bg-purple-400/10 ${activeSection === item
-                    ? 'opacity-100 animate-ping-slow'
-                    : 'opacity-0'
-                    }`} />
+                  <div
+                    className={`absolute inset-0 rounded-full bg-purple-400/10 ${
+                      activeSection === item ? 'opacity-100 animate-ping-slow' : 'opacity-0'
+                    }`}
+                  />
                 </div>
                 <span className="hidden md:inline font-medium capitalize">{item}</span>
               </button>
@@ -161,7 +158,10 @@ export default function Portfolio() {
       </nav>
 
       {/* Hero Section with Floating Effect */}
-      <section id="home" className="min-h-screen flex items-center justify-center px-4 sm:px-6 pt-24 sm:pt-32 pb-12 sm:pb-16 relative z-10">
+      <section
+        id="home"
+        className="min-h-screen flex items-center justify-center px-4 sm:px-6 pt-24 sm:pt-32 pb-12 sm:pb-16 relative z-10"
+      >
         <div className="text-center space-y-6 sm:space-y-8 transform hover:translate-y-[-10px] transition-transform duration-500">
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-4 animate-fade-in-up leading-tight">
             <span className="inline-block whitespace-nowrap bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent pb-2">
@@ -171,7 +171,8 @@ export default function Portfolio() {
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
             <FlaskConical className="inline mr-2 w-6 h-6 text-purple-600 dark:text-purple-400 animate-pulse" />
-            Developing next-generation quantum solutions through innovative algorithms and hybrid architectures
+            Developing next-generation quantum solutions through innovative algorithms and hybrid
+            architectures
           </p>
         </div>
       </section>
@@ -193,9 +194,9 @@ export default function Portfolio() {
                   <Image
                     src={project.image}
                     alt={project.title}
-                    layout="fill"
-                    objectFit="cover"
-                    className="group-hover:scale-105 transition-transform"
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    className="group-hover:scale-105 transition-transform bg-gray-700"
                     unoptimized
                     priority
                   />
@@ -205,7 +206,9 @@ export default function Portfolio() {
                   <span className="p-3 bg-purple-100 dark:bg-purple-900/20 rounded-xl">
                     {project.icon}
                   </span>
-                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{project.title}</h3>
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                    {project.title}
+                  </h3>
                 </div>
                 <p className="text-gray-600 dark:text-gray-300 mb-6">{project.description}</p>
                 <div className="flex flex-wrap gap-2">
@@ -226,7 +229,10 @@ export default function Portfolio() {
       </section>
 
       {/* Skills Section with Animated Grid */}
-      <section id="skills" className="py-16 sm:py-24 px-4 sm:px-6 bg-purple-50 dark:bg-black/50 relative">
+      <section
+        id="skills"
+        className="py-16 sm:py-24 px-4 sm:px-6 bg-purple-50 dark:bg-black/50 relative"
+      >
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-12 sm:mb-16 text-center">
             <Cpu className="inline-block w-10 h-10 sm:w-12 sm:h-12 mr-3 sm:mr-4 text-purple-600 dark:text-purple-400 animate-pulse" />
@@ -280,10 +286,16 @@ export default function Portfolio() {
             </button>
           </form>
           <div className="mt-8 flex justify-center gap-8">
-            <a href="https://linkedin.com" className="text-purple-600 dark:text-purple-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <a
+              href="https://linkedin.com"
+              className="text-purple-600 dark:text-purple-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
               <Linkedin className="w-8 h-8 hover:scale-125 transition-transform" />
             </a>
-            <a href="https://github.com" className="text-purple-600 dark:text-purple-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <a
+              href="https://github.com"
+              className="text-purple-600 dark:text-purple-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
               <Github className="w-8 h-8 hover:scale-125 transition-transform" />
             </a>
           </div>
